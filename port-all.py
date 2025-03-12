@@ -34,8 +34,7 @@ def get_actual_website_port(url):
                             results["https_verified"] = False
         except:
             pass
-    
-    # فحص جميع البورتات من 1 إلى 65535
+
     with ThreadPoolExecutor(max_workers=100) as executor:
         futures = [executor.submit(check_port, port) for port in range(1, 65536)]
         for future in as_completed(futures):
@@ -57,18 +56,18 @@ def get_actual_website_port(url):
 
 if __name__ == "__main__":
     try:
-        url = input("أدخل رابط الموقع: ")
-        print(f"جاري فحص البورت لـ {url}...")
+        url = input("link - - > ")
+        print(f"Checking  {url}...")
         result = get_actual_website_port(url)
         
-        print("\nنتائج الفحص:")
-        print(f"اسم المضيف: {result['hostname']}")
-        print(f"البورت المحدد في الرابط: {result['specified_port'] if result['specified_port'] else 'غير محدد'}")
-        print(f"البورت الأساسي المستخدم: {result['primary_port'] if result['primary_port'] else 'غير معروف'}")
-        print(f"المنافذ المفتوحة: {', '.join(map(str, result['open_ports'])) if result['open_ports'] else 'لم يتم العثور على منافذ مفتوحة'}")
+        print("\n Test results :")
+        print(f"Host Name : {result['hostname']}")
+        print(f"The port specified in the link : {result['specified_port'] if result['specified_port'] else 'undefined '}")
+        print(f"Primary port used: {result['primary_port'] if result['primary_port'] else 'unknown '}")
+        print(f"Open ports : {', '.join(map(str, result['open_ports'])) if result['open_ports'] else 'No ports found '}")
         
         if 443 in result["open_ports"] and "https_verified" in result:
-            print(f"تأكيد HTTPS: {'نعم' if result['https_verified'] else 'لا'}")
+            print(f"sure  HTTPS: {'y' if result['https_verified'] else 'n'}")
     
     except Exception as e:
-        print(f"حدث خطأ: {str(e)}")
+        print(f"error: {str(e)}")
