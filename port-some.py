@@ -9,7 +9,7 @@ def get_actual_website_port(url):
     if ':' in hostname:
         hostname = hostname.split(':')[0]
     
-    # البورتات الشائعة فقط
+    
     common_ports = [21, 22, 23, 25, 53, 80, 110, 143, 443, 465, 587, 993, 995, 3306, 3389, 5900, 8080, 8443]
     
     results = {
@@ -38,7 +38,7 @@ def get_actual_website_port(url):
         except:
             pass
     
-    # استخدام ThreadPoolExecutor للتحقق من البورتات بشكل متوازي
+    
     with ThreadPoolExecutor(max_workers=50) as executor:
         futures = [executor.submit(check_port, port) for port in common_ports]
         for future in as_completed(futures):
@@ -60,18 +60,18 @@ def get_actual_website_port(url):
 
 if __name__ == "__main__":
     try:
-        url = input("أدخل رابط الموقع: ")
-        print(f"جاري فحص البورت لـ {url}...")
+        url = input("link - - > ")
+        print(f"Checking  {url}...")
         result = get_actual_website_port(url)
         
-        print("\nنتائج الفحص:")
-        print(f"اسم المضيف: {result['hostname']}")
-        print(f"البورت المحدد في الرابط: {result['specified_port'] if result['specified_port'] else 'غير محدد'}")
-        print(f"البورت الأساسي المستخدم: {result['primary_port'] if result['primary_port'] else 'غير معروف'}")
-        print(f"المنافذ المفتوحة: {', '.join(map(str, result['open_ports'])) if result['open_ports'] else 'لم يتم العثور على منافذ مفتوحة'}")
+        print("\nTest results :")
+        print(f"Host Name : {result['hostname']}")
+        print(f"The port specified in the link : {result['specified_port'] if result['specified_port'] else 'غير محدد'}")
+        print(f"The port specified in the link : {result['primary_port'] if result['primary_port'] else 'غير معروف'}")
+        print(f"Open ports : {', '.join(map(str, result['open_ports'])) if result['open_ports'] else 'لم يتم العثور على منافذ مفتوحة'}")
         
         if 443 in result["open_ports"] and "https_verified" in result:
-            print(f"تأكيد HTTPS: {'نعم' if result['https_verified'] else 'لا'}")
+            print(f"sure  HTTPS: {'(y) ' if result['https_verified'] else '(n) '}")
     
     except Exception as e:
-        print(f"حدث خطأ: {str(e)}")
+        print(f"error: {str(e)}")
